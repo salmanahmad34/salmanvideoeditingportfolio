@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects | Salman Ahmad - Premium Video Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00bcd4;
+            --primary-dark: #0097a7;
+            --secondary: #ff4081;
+            --bg-dark: #121212;
+            --bg-medium: #1f1f1f;
+            --bg-light: #333;
+            --text: #fff;
+            --text-secondary: #aaa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Header with Glass Morphism */
+        header {
+            background: rgba(31, 31, 31, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 30px rgba(0, 188, 212, 0.2);
+            border-bottom: 1px solid rgba(0, 188, 212, 0.1);
+            transition: all 0.5s ease;
+        }
+        
+        header.scrolled {
+            padding: 10px 5%;
+            background: rgba(18, 18, 18, 0.95);
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+        }
+        
+        header h1::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+        
+        header:hover h1::after {
+            width: 100%;
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        nav a {
+            margin: 0 20px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+        }
+        
+        nav a.active {
+            color: var(--primary);
+        }
+        
+        nav a::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a.active::before,
+        nav a:hover::before {
+            width: 100%;
+        }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+        
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: inline-block;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        /* Project Grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .project-item {
+            background: var(--bg-medium);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .project-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,188,212,0.3), rgba(255,64,129,0.1));
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .project-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 188, 212, 0.4);
+        }
+        
+        .project-item:hover::before {
+            opacity: 1;
+        }
+        
+        .project-item h3 {
+            color: var(--primary);
+            margin: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .video-wrapper video {
+            width: 100%;
+            aspect-ratio: 9/16;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: rgba(0, 188, 212, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .play-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: rgba(0, 151, 167, 0.9);
+        }
+        
+        .play-button::before {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 20px solid var(--bg-dark);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 5px;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.5s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 188, 212, 0.4);
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 30px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        .whatsapp-btn i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            background: #1fba58;
+        }
+        
+        .whatsapp-btn-large {
+            padding: 18px 36px;
+            font-size: 1.2rem;
+        }
+        
+        /* Contact Links */
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .contact-links a {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 25px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--bg-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+        }
+        
+        .contact-links a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 188, 212, 0.4);
+        }
+        
+        .contact-links a i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 80px;
+            position: relative;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .project-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            nav {
+                margin-top: 15px;
+            }
+            
+            nav a {
+                margin: 0 10px;
+            }
+            
+            .main-container {
+                margin: 80px auto 30px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-links a {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <h1>Salman Ahmad</h1>
+        <nav>
+            <a href="index.html#home"><i class="fas fa-home"></i> Home</a>
+            <a href="index.html#about"><i class="fas fa-user"></i> About</a>
+            <a href="project1.html" class="active"><i class="fas fa-video"></i> Projects</a>
+            <a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <!-- Video Projects Section -->
+        <section>
+            <div class="section-title">
+                <h2>My Video Portfolio</h2>
+            </div>
+            
+            <div class="project-grid">
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="InShot_20240716_133402089.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>Cinematic Travel Vlog</h3>
+                </div>
+                
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="InShot_20240716_184458013.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>Music Video Production</h3>
+                </div>
+                
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="InShot_20240718_223253230.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>Corporate Brand Film</h3>
+                </div>
+                
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="InShot_20240913_122529720.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>Event Highlights</h3>
+                </div>
+                
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="lv_0_20240117221432.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>Short Film</h3>
+                </div>
+                
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="lv_0_20250223101127.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>Product Commercial</h3>
+                </div>
+                
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="lv_0_20250224160632.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>Social Media Content</h3>
+                </div>
+                
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="lv_0_20250228145444.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>Documentary Style</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Projects Section -->
+        <section>
+            <div class="section-title">
+                <h2>My App Showcase</h2>
+            </div>
+            
+            <div class="project-grid">
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="app1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>E-Commerce App</h3>
+                </div>
+                
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="app2.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>QR Generator</h3>
+                </div>
+                
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="app3.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>FixItNow Service App</h3>
+                </div>
+                
+                <div class="project-item">
+                    <div class="video-wrapper">
+                        <video playsinline>
+                            <source src="app4.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button"></div>
+                    </div>
+                    <h3>Personal Chatbot</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contactinfo">
+            <div class="section-title">
+                <h2>Get in Touch</h2>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <p>Ready to start your project? Contact me through any of these channels:</p>
+            </div>
+            
+            <div class="contact-links">
+                <a href="https://wa.me/917307141956"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a href="mailto:ahmadsalman9939@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+                <a href="https://instagram.com/"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="https://linkedin.com/in/YourLinkedInHandle"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="index.html#contact" class="btn"><i class="fas fa-paper-plane"></i> Send Me a Message</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; <span id="currentYear"></span> Salman Ahmad. All Rights Reserved.</p>
+        <p style="margin-top: 10px; color: var(--text-secondary); font-size: 0.9rem;">
+            Crafted with <i class="fas fa-heart" style="color: var(--secondary);"></i> and <i class="fas fa-code" style="color: var(--primary);"></i>
+        </p>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Set current year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Video play functionality
+        document.querySelectorAll('.play-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const video = this.parentElement.querySelector('video');
+                if (video.paused) {
+                    video.play();
+                    this.style.display = 'none';
+                    
+                    // Pause other videos
+                    document.querySelectorAll('video').forEach(v => {
+                        if (v !== video && !v.paused) {
+                            v.pause();
+                            v.nextElementSibling.style.display = 'flex';
+                        }
+                    });
+                }
+            });
+        });
+        
+        // Video click to play/pause
+        document.querySelectorAll('.video-wrapper video').forEach(video => {
+            video.addEventListener('click', function() {
+                if (this.paused) {
+                    this.play();
+                    this.nextElementSibling.style.display = 'none';
+                } else {
+                    this.pause();
+                    this.nextElementSibling.style.display = 'flex';
+                }
+            });
+            
+            // Show play button when video ends
+            video.addEventListener('ended', function() {
+                this.nextElementSibling.style.display = 'flex';
+            });
+        });
+        
+        // Highlight current page in navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop();
+            document.querySelectorAll('nav a').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
